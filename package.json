@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "ssh2": "^0.8.5",
+    "through2": "^3.0.1",
     "yargs-parser": "^14.0.0"
   }
 }
