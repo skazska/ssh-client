@@ -22,7 +22,6 @@ conn
             .on('exit', () => {
                 process.exit(0);
             });
-        // controller.uptime();
         controller.shell(process.stdin, process.stdout);
     })
     .connect(params);
