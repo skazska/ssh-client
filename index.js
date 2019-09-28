@@ -21,8 +21,11 @@ conn
     .on('ready', function() {
         console.info('connected');
         const controller = new Controller({client: conn})
-            .on('exit', () => {
+            .on('shellExit', () => {
                 controller.cleanup();
+            })
+            .on('cleanedUp', () => {
+                conn.end();
                 process.exit(0);
             });
 
