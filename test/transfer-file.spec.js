@@ -5,13 +5,29 @@ const sinon = require('sinon');
 const sinonChai = require("sinon-chai");
 use(sinonChai);
 
-// const through2 = require('through2');
 const { BufferReadableMock, BufferWritableMock } = require('stream-mock')
 const fs = require('fs');
 
 const transferFile = require('../lib/transfer-file').transferFile;
 
-const getFakeClient = require('./fake-client');
+const getFakeClient = (err, readStream, writeStream) => {
+    const createWriteStreamFake = sinon.fake.returns(writeStream);
+    const createReadStreamFake = sinon.fake.returns(readStream);
+
+    const sftp = (cb) => {
+        cb(err, {
+            createWriteStream: createWriteStreamFake,
+            createReadStream: createReadStreamFake
+        });
+    };
+
+    sftp.createWriteStreamFake = createWriteStreamFake;
+    sftp.createReadStreamFake = createReadStreamFake;
+
+    return {
+        sftp: sftp
+    }
+};
 
 describe('transfer-file', () => {
     describe('get', () => {
